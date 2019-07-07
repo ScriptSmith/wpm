@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <!-- Simple test project -->
+    <head>
+        <title>WPM calculator</title>
+    </head>
+    <body>
+        <style>
+            textarea {
+                width: 500px;
+                height: 500px;
+                margin: 0 auto;
+                display: block;
+            }
+
+            #wpm {
+                text-align: center;
+            }
+        </style>
+
+        <div id="wpm"></div>
+        <textarea rows=10 cols=50 autofocus autocomplete="off"></textarea>
+
+        <script type="text/javascript">
+            const wpmDiv = document.querySelector("#wpm");
+            const textInput = document.querySelector("textarea");
+
+            let started = false;
+            let startTime;
+
+            const sampleRate = 2000;
+            let lastSample = Date.now();
+
+            textInput.addEventListener("keydown", (event) => {
+                if (!started) {
+                    started = true;
+                    startTime = Date.now();
+                }
+
+                if ((Date.now() - lastSample) < sampleRate) {
+                    return;
+                }
+                lastSample = Date.now();
+
+                const wpm = (textInput.value.length / 5) / ((Date.now() - startTime) / 1000) * 60;
+                wpmDiv.innerHTML = Math.round(wpm);
+            });
+        </script>
+    </body>
+</html>
